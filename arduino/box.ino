@@ -16,7 +16,7 @@ SimpleTimer timer = SimpleTimer();
 int timerId;
 
 // 2 min in milliseconds
-long time = 12000;
+long time = 120000;
 
 void countdown() {
   time = time - 1;
