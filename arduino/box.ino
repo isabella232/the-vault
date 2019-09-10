@@ -1,5 +1,6 @@
 #include "LedControl.h"
 #include "SimpleTimer.h"
+#include "Rotary.h"
 #include <math.h>
 /*
  Now we need a LedControl to work with.
@@ -9,14 +10,39 @@
  pin 10 is connected to LOAD 
  We have only a single MAX72XX.
  */
-LedControl lc = LedControl(12,13,10,1);
+LedControl lc = LedControl(12, 13, 10, 1);
 
 // Our timer
 SimpleTimer timer = SimpleTimer();
 int timerId;
-
 // 2 min in milliseconds
 long time = 120000;
+
+// Rotary encoder stuff
+Rotary r1 = Rotary(2, 3);
+
+void setup() {
+  Serial.begin(9600);
+
+  lc.shutdown(0, false); // The MAX72XX is in power-saving mode on startup, we have to do a wakeup call
+  lc.setIntensity(0, 8); /* Set the brightness to a medium values */
+  lc.clearDisplay(0); /* and clear the display */
+
+  // Start our timer here
+  timerId = timer.setInterval(1, countdown);  
+
+  // Listen to changes in rotary encoder
+  r1.begin();
+}
+
+void loop() { 
+  timer.run();
+
+  int result = r1.process();
+  if (result) {
+    Serial.println(result == DIR_CW ? "Right" : "Left");
+  }
+}
 
 void countdown() {
   time = time - 1;
@@ -38,28 +64,6 @@ void countdown() {
     return;
   }
 }
-
-
-void setup() {
-  Serial.begin(9600);
-  Serial.println(time);
-  /*
-   The MAX72XX is in power-saving mode on startup,
-   we have to do a wakeup call
-   */
-  lc.shutdown(0,false);
-  /* Set the brightness to a medium values */
-  lc.setIntensity(0,8);
-  /* and clear the display */
-  lc.clearDisplay(0);
-
-  timerId = timer.setInterval(1, countdown);  
-}
-
-void loop() { 
-  timer.run();
-}
-
 
 void showOnDisplay(int first, int second, int third, int fourth, int fifth, int sixth, int seventh, int eighth) {
   lc.setDigit(0, 7, first, false);
