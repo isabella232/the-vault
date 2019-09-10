@@ -1,5 +1,6 @@
 #include "LedControl.h"
 #include "SimpleTimer.h"
+#include <math.h>
 /*
  Now we need a LedControl to work with.
  ***** These pin numbers will probably not work with your hardware *****
@@ -12,21 +13,30 @@ LedControl lc = LedControl(12,13,10,1);
 
 // Our timer
 SimpleTimer timer = SimpleTimer();
+int timerId;
 
-// 2 min in seconds
-int time = 120;
+// 2 min in milliseconds
+long time = 12000;
 
 void countdown() {
   time = time - 1;
-  int minutes = (time / 60);
-  int seconds = seconds - (minutes * 60);
-  // int milliSeconds = time / (60 * 60);
-  Serial.println("Start");
-  Serial.println(minutes);
-  Serial.println(seconds);
-  // Serial.println(milliSeconds);
-  Serial.println("Stop");
-  showOnDisplay(0, minutes, seconds / 10, seconds % 10, 0, 0, 0, 0);
+
+  int minutes = floor(time / 60 / 1000);
+  int seconds = floor((time / 1000) - (minutes * 60));
+  int milliseconds = time - (minutes * 60000) - (seconds * 1000);
+
+  int one = floor(milliseconds / 100);
+  int two = floor((milliseconds - (one * 100)) / 10);
+  int three = floor(milliseconds - (one * 100) - (two * 10));
+
+  showOnDisplay(0, minutes, seconds / 10, seconds % 10, one, two, three, three);
+
+  // Stop timer after we've shown full zeros on the display
+  if (time == 0) {
+    timer.disable(timerId);
+    timer.deleteTimer(timerId);
+    return;
+  }
 }
 
 
@@ -43,8 +53,7 @@ void setup() {
   /* and clear the display */
   lc.clearDisplay(0);
 
-  
-  timer.setTimer(1000, countdown, time);  
+  timerId = timer.setInterval(1, countdown);  
 }
 
 void loop() { 
