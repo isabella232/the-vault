@@ -12,6 +12,13 @@ LetterLogic::LetterLogic(char r1p1, char r1p2, char r2p1, char r2p2, bool _test_
 //public
 void LetterLogic::setup() 
 {
+	int r = 0;
+	for (int i = A0 ; i <= A7; i++) {
+		r += analogRead(i);
+	}
+	randomSeed(r);
+
+	Serial.println("LetterLogic Setup");
 	r1->begin();
 	r2->begin();
 
@@ -52,8 +59,8 @@ bool LetterLogic::isCorrect()
 //public
 void LetterLogic::nextLetter()
 {
+	correctGuesses += 1;
 	displayedLetter = randomLetter();
-	currentGuess += 1;
 }
 
 //public
@@ -66,13 +73,14 @@ String LetterLogic::getCurrentLetters()
 //private
 char LetterLogic::randomLetter()
 {
+  //hex 41 is dec 65
 	if (TEST_MODE)
 	{
-		return 'A' + correctGuesses;
+		return 65 + correctGuesses;
 	}
 	else
 	{
-		return rand() % 26 + 41;
+		return rand() % 26 +65;
 	}
 }
 
@@ -109,4 +117,8 @@ void LetterLogic::rotateLetter(int dial1Dir, int dial2Dir)
 	{
 		currentGuess = 0;
 	}
+
+   if(dial1Dir || dial2Dir){
+     Serial.println(currentGuess);
+  }
 }

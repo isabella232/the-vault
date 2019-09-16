@@ -13,7 +13,7 @@ private:
     long stoppedOffset = 0;
     long timeTarget = 120000;
     long time = 0;
-    long COMPLETED_DURATION_MS = 200;
+    long COMPLETED_DURATION_MS = 250;
 
     void countdown()
     {
@@ -82,9 +82,10 @@ public:
 
     void setup()
     {
+      Serial.println("DisplayTimer Setup");
         if (TEST_MODE)
         {
-            timeTarget = 3000;
+            timeTarget = 120000;
         }
 
         lc->shutdown(0, false); // The MAX72XX is in power-saving mode on startup, we have to do a wakeup call
@@ -98,7 +99,7 @@ public:
         {
             countdown();
         }
-        else if (completed)
+        else if (stopped)
         {
             if ((millis() % (COMPLETED_DURATION_MS * 2)) < COMPLETED_DURATION_MS)
             {
@@ -123,6 +124,12 @@ public:
             stoppedOffset = millis();
             stopped = true;
         }
+    }
+
+    void complete()
+    {
+    completed = true;
+    //stopped = true;
     }
 
     void start()
