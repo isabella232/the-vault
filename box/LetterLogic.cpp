@@ -35,7 +35,6 @@ void LetterLogic::loop()
 	}
 
 	rotateLetter(dial1Dir, dial2Dir);
-  Serial.println(currentGuess);
 }
 
 //public
@@ -111,4 +110,8 @@ void LetterLogic::rotateLetter(int dial1Dir, int dial2Dir)
 	{
 		currentGuess = 0;
 	}
+
+   if(dial1Dir || dial2Dir){
+     Serial.println(currentGuess);
+  }
 }
