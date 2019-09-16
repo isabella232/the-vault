@@ -14,20 +14,17 @@ bool TEST_MODE = true;
  We have only a single MAX72XX.
  */
 DisplayTimer displayTimer = DisplayTimer(12, 13, 10, TEST_MODE);
+LetterLogic letterLogic = LetterLogic(2, 3, 4, 5);
 
 int flichSwitchIn = 7; // choose the input pin (for a pushbutton)
 int flichSwitchInValue = 0;
 
-LetterLogic *ll = new LetterLogic(2, 3, 4, 5);
-
 void setup()
 {
   displayTimer.Setup();
+  letterLogic.setup();
 
   Serial.begin(9600);
-
-  // Start our timer here
-  ll->setup();
 
   //detect switch button
   pinMode(flichSwitchIn, INPUT);
@@ -36,7 +33,7 @@ void setup()
 void loop()
 {
   displayTimer.Loop();
-  ll->loop();
+  letterLogic.loop();
 
   flichSwitchInValue = digitalRead(flichSwitchIn); // read input value
   if (flichSwitchInValue)
