@@ -2,19 +2,12 @@
 #include "LetterLogic.h"
 
 
-LetterLogic::LetterLogic(char r1p1, char r1p2, char r2p1, char r2p2) {
+LetterLogic::LetterLogic(char r1p1, char r1p2, char r2p1, char r2p2, void (*_guessedRight)(), void (*_guessedWrong)(), bool _test_mode) {
 	r1 = new Rotary(r1p1, r1p2);
 	r2 = new Rotary(r2p1, r2p2);
-}
-
-void LetterLogic::guessedRight()
-{
-	Serial.println("Guessed Right");
-}
-
-void LetterLogic::guessedWrong()
-{
-	Serial.println("Guessed Wrong");
+	TEST_MODE = _test_mode;
+	guessedRight = _guessedRight;
+	guessedWrong = _guessedWrong;
 }
 
 char LetterLogic::randomLetter()
@@ -48,6 +41,15 @@ char LetterLogic::guess(bool switches[], char guess)
 	else
 	{
 		return 0;
+	}
+}
+
+void LetterLogic::readSwitches(bool switches[]) {
+	if (TEST_MODE) {
+		switches[0] = true;
+		switches[1] = true;
+		switches[2] = true;
+		switches[3] = true;
 	}
 }
 
@@ -96,7 +98,9 @@ void LetterLogic::setup()
 
 void LetterLogic::loop() 
 {
-	bool switches[] = {true, true, true, true};
+	bool switches[] = {false, false, false, false};
+
+	readSwitches(switches);
 
 	int dial1Dir = r1->process();
 	if (dial1Dir)
