@@ -13,7 +13,7 @@ private:
     long stoppedOffset = 0;
     long timeTarget = 120000;
     long time = 0;
-    long COMPLETED_DURATION_MS = 200;
+    long COMPLETED_DURATION_MS = 250;
 
     void countdown()
     {
@@ -99,7 +99,7 @@ public:
         {
             countdown();
         }
-        else if (completed)
+        else if (stopped)
         {
             if ((millis() % (COMPLETED_DURATION_MS * 2)) < COMPLETED_DURATION_MS)
             {
