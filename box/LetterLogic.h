@@ -14,8 +14,8 @@ class LetterLogic {
 	int correctGuesses = 0;
 
 	char NUM_POSITIONS = 18;
-	char dial1Pos = 1;
-	char dial2Pos = 4;
+	char dial1Pos = 0;
+	char dial2Pos = 0;
 
 	public:
 		LetterLogic(char r1p1, char r1p2, char r2p1, char r2p2, bool _test_mode);
