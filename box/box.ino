@@ -30,9 +30,6 @@ ChallengeDisplay challengeDisplayu = ChallengeDisplay();
 DisplayTimer displayTimer = DisplayTimer(12, 13, 10, TEST_MODE);
 LetterLogic letterLogic = LetterLogic(2, 3, 4, 5, guessedRight, guessedWrong, TEST_MODE);
 
-int flichSwitchIn = 7; // choose the input pin (for a pushbutton)
-int flichSwitchInValue = 0;
-
 void setup()
 {
   displayTimer.setup();
@@ -42,13 +39,9 @@ void setup()
   challengeDisplayu.setup();
   challengeDisplayu.setLetter(letterLogic.currentLetter());
 
-  FlickSwitches flickSwitches = FlickSwitches();
   flickSwitch.setup();
 
   Serial.begin(9600);
-
-  //detect switch button
-  pinMode(flichSwitchIn, INPUT);
 }
 
 void loop()
@@ -81,16 +74,5 @@ void loop()
         displayTimer.failed();
       }
     }
-  }
-
-  //TEST
-  flichSwitchInValue = digitalRead(flichSwitchIn); // read input value
-  if (flichSwitchInValue)
-  {
-    displayTimer.stop();
-  }
-  else
-  {
-    displayTimer.start();
   }
 }
