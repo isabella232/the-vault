@@ -126,6 +126,12 @@ public:
         }
     }
 
+    void complete()
+    {
+    completed = true;
+    //stopped = true;
+    }
+
     void start()
     {
         if (stopped && time >= 0)

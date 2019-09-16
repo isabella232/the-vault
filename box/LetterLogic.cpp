@@ -67,13 +67,14 @@ String LetterLogic::getCurrentLetters()
 //private
 char LetterLogic::randomLetter()
 {
+  //hex 41 is dec 65
 	if (TEST_MODE)
 	{
-		return 42 + correctGuesses;
+		return 65 + correctGuesses;
 	}
 	else
 	{
-		return rand() % 26 + 41;
+		return rand() % 26 +65;
 	}
 }
 

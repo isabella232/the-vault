@@ -72,7 +72,7 @@ public:
             return _thirdSwitchValue > 10;
         case 3:
             if (digitalRead(_fourthSwitchPin) == HIGH)
-            {
+            { 
                 _fourthSwitchValue++;
             }
             else

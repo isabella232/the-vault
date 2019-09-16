@@ -56,7 +56,7 @@ void loop()
         if (flickSwitches.isLast())
         {
           Serial.println("Guess Was Last");
-          displayTimer.stop();
+          displayTimer.complete();
         }
         else
         {
