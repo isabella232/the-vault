@@ -11,6 +11,8 @@ public:
 
     void setup() {}
     void loop() {}
-    void setLetters(String letters) {}
+    void setLetters(String letters) {
+		Serial.println(letters);
+	}
 };
 #endif
