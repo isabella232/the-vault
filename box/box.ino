@@ -16,12 +16,12 @@ bool TEST_MODE = true;
 
 void guessedRight()
 {
-	Serial.println("Guessed Right");
+  Serial.println("Guessed Right");
 }
 
 void guessedWrong()
 {
-	Serial.println("Guessed Wrong");
+  Serial.println("Guessed Wrong");
 }
 
 DisplayTimer displayTimer = DisplayTimer(12, 13, 10, TEST_MODE);
@@ -36,8 +36,10 @@ void setup()
 
   letterLogic.setup();
 
-  // inputDisplay.setup();
-  // inputDisplay.setLetter(letterLogic.currentLetter());
+  inputDisplay.setup();
+  inputDisplay.setLetter(letterLogic.currentLetter());
+
+  flickSwitch.setup();
 
   Serial.begin(9600);
 
@@ -49,35 +51,42 @@ void loop()
 {
   displayTimer.loop();
   letterLogic.loop();
+  flickSwitch.loop();
+  inputDisplay.loop();
 
   if (!displayTimer.IsComplete())
   {
-    // if (FlickSwitch.CurrentIsFlicked())
-    // {
-    //   if (letterLogic.isCorrect())
-    //   {
-    //     letterLogic.nextLetter();
-    //     inputDisplay.setLetter(letterLogic.currentLetter());
-    //     // Open Clamp
-    //     if (currentFlickSwitch.isLast())
-    //     {
-    //       displayTimer.stop(;)
-    //     }
-    //   }
-    //   else
-    //   {
-    //     displayTimer.failed();
-    //   }
+    if (flickSwitch.CurrentIsFlicked())
+    {
+      if (letterLogic.isCorrect())
+      {
+        // Open Current Clamp
+        if (currentFlickSwitch.isLast())
+        {
+          displayTimer.stop(;)
+        }
+        else
+        {
+          letterLogic.nextLetter();
+          inputDisplay.setLetters(letterLogic.currentLetters());
+          flickSwitch.SetNextFlicker();
+        }
+      }
+      else
+      {
+        displayTimer.failed();
+      }
+    }
   }
-}
 
-flichSwitchInValue = digitalRead(flichSwitchIn); // read input value
-if (flichSwitchInValue)
-{
-  displayTimer.stop();
-}
-else
-{
-  displayTimer.start();
-}
+  //TEST
+  flichSwitchInValue = digitalRead(flichSwitchIn); // read input value
+  if (flichSwitchInValue)
+  {
+    displayTimer.stop();
+  }
+  else
+  {
+    displayTimer.start();
+  }
 }
