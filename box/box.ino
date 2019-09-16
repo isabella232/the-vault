@@ -15,7 +15,7 @@ bool TEST_MODE = true;
  pin 10 is connected to LOAD 
  We have only a single MAX72XX.
  */
-FlickSwitches flickSwitches = FlickSwitches();
+FlickSwitches flickSwitches = FlickSwitches(6, 8, 9, 11);
 ChallengeDisplay challengeDisplayu = ChallengeDisplay();
 DisplayTimer displayTimer = DisplayTimer(12, 13, 10, TEST_MODE);
 LetterLogic letterLogic = LetterLogic(2, 3, 4, 5, TEST_MODE);
