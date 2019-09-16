@@ -3,6 +3,8 @@
 #include "LedControl.h"
 #include <math.h>
 #include "LetterLogic.h"
+#include "ChallengeDisplay.h"
+#include "FlickSwitches.h"
 
 bool TEST_MODE = true;
 /*
@@ -23,7 +25,8 @@ void guessedWrong()
 {
   Serial.println("Guessed Wrong");
 }
-
+FlickSwitches flickSwitches = FlickSwitches();
+ChallengeDisplay challengeDisplayu = ChallengeDisplay();
 DisplayTimer displayTimer = DisplayTimer(12, 13, 10, TEST_MODE);
 LetterLogic letterLogic = LetterLogic(2, 3, 4, 5, guessedRight, guessedWrong, TEST_MODE);
 
@@ -36,9 +39,10 @@ void setup()
 
   letterLogic.setup();
 
-  inputDisplay.setup();
-  inputDisplay.setLetter(letterLogic.currentLetter());
+  challengeDisplayu.setup();
+  challengeDisplayu.setLetter(letterLogic.currentLetter());
 
+  FlickSwitches flickSwitches = FlickSwitches();
   flickSwitch.setup();
 
   Serial.begin(9600);
@@ -51,25 +55,25 @@ void loop()
 {
   displayTimer.loop();
   letterLogic.loop();
-  flickSwitch.loop();
-  inputDisplay.loop();
+  flickSwitches.loop();
+  challengeDisplayu.loop();
 
-  if (!displayTimer.IsComplete())
+  if (!displayTimer.isComplete())
   {
-    if (flickSwitch.CurrentIsFlicked())
+    if (flickSwitches.currentIsFlicked())
     {
       if (letterLogic.isCorrect())
       {
         // Open Current Clamp
-        if (currentFlickSwitch.isLast())
+        if (flickSwitches.isLast())
         {
           displayTimer.stop(;)
         }
         else
         {
           letterLogic.nextLetter();
-          inputDisplay.setLetters(letterLogic.currentLetters());
-          flickSwitch.SetNextFlicker();
+          challengeDisplayu.setLetters(letterLogic.currentLetters());
+          flickSwitches.selectNextFlicker();
         }
       }
       else
