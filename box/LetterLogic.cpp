@@ -53,8 +53,8 @@ bool LetterLogic::isCorrect()
 //public
 void LetterLogic::nextLetter()
 {
-	displayedLetter = randomLetter();
 	currentGuess += 1;
+	displayedLetter = randomLetter();
 }
 
 //public
