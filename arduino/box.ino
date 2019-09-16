@@ -10,6 +10,8 @@
  pin 10 is connected to LOAD 
  We have only a single MAX72XX.
  */
+bool TEST_MODE = false;
+
 LedControl lc = LedControl(12, 13, 10, 1);
 
 // Our timer
@@ -20,6 +22,55 @@ long time = 120000;
 
 // Rotary encoder stuff
 Rotary r1 = Rotary(2, 3);
+
+char displayedLetter = 'A';
+int correctGuesses = 0;
+
+char NUM_POSITIONS = 18;
+char dial1Pos = 0;
+char dial2Pos = 0;
+
+char randomLetter() {
+	if (TEST_MODE) {
+		return 'A' + correctGuesses;
+	} else {
+		return rand() % 26 + 41;
+	}
+}
+
+// 1 is correct guess
+// 0 is no guess
+// -1 is wrong guess
+char guess(bool[] switches) {
+	if (sizeof(switches)) {
+		return 0;
+	}
+	if (switches[correctGuesses]) {
+		
+	}
+}
+
+char rotateLetter(int dial1Dir, int dial2Dir) {
+	if (dial1Dir) {
+		if (dial1Dir == DIR_CW) {
+			dial1Pos = (dial1Pos + 1) % NUM_POSITIONS;
+		} else {
+			dial1Pos = (dial1Pos - 1) % NUM_POSITIONS;
+		}
+	}
+	if (dial2Dir) {
+		if (dial2Dir == DIR_CW) {
+			dial2Pos = (dial2Pos + 1) % NUM_POSITIONS;
+		} else {
+			dial2Pos = (dial2Pos - 1) % NUM_POSITIONS;
+		}
+	}
+	if (dial1Pos <= 15 && dial2Pos <= 15) {
+		return dial1Pos + (dial2Pos * 16);
+	} else {
+		return 0;
+	}
+}
 
 void setup() {
   Serial.begin(9600);
@@ -33,6 +84,8 @@ void setup() {
 
   // Listen to changes in rotary encoder
   r1.begin();
+
+  displayedLetter = randomLetter();
 }
 
 void loop() { 
