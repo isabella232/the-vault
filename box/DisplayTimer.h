@@ -12,6 +12,7 @@ private:
     long stoppedOffset = 0;
     long timeTarget = 120000;
     long time = 0;
+    long COMPLETED_DURATION_MS = 200;
 
 public:
     bool stopped = false;
@@ -26,7 +27,7 @@ public:
     {
         if (TEST_MODE)
         {
-            timeTarget = 10000;
+            timeTarget = 3000;
         }
 
         lc->shutdown(0, false); // The MAX72XX is in power-saving mode on startup, we have to do a wakeup call
@@ -39,6 +40,17 @@ public:
         if (!stopped && !completed)
         {
             countdown();
+        }
+        else if (completed)
+        {
+            if ((millis() % (COMPLETED_DURATION_MS * 2)) < COMPLETED_DURATION_MS)
+            {
+                lc->setIntensity(0, 0); /* Set the brightness to a medium values */
+            }
+            else
+            {
+                lc->setIntensity(0, 8); /* Set the brightness to a medium values */
+            }
         }
     }
 
