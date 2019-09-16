@@ -6,7 +6,7 @@
 #include "ChallengeDisplay.h"
 #include "FlickSwitches.h"
 
-bool TEST_MODE = true;
+bool TEST_MODE = false;
 /*
  Now we need a LedControl to work with.
  ***** These pin numbers will probably not work with your hardware *****
@@ -23,7 +23,7 @@ LetterLogic letterLogic = LetterLogic(2, 3, 4, 5, TEST_MODE);
 void setup()
 {
   Serial.begin(9600);
-  
+
   displayTimer.setup();
 
   letterLogic.setup();
@@ -32,8 +32,6 @@ void setup()
   challengeDisplay.setLetters(letterLogic.getCurrentLetters());
 
   flickSwitches.setup();
-
-  
 }
 
 void loop()
@@ -48,7 +46,7 @@ void loop()
     //Serial.println("timer not completed");
     if (flickSwitches.currentIsFlicked())
     {
-       Serial.println("Current flicked");
+      Serial.println("Current flicked");
       if (letterLogic.isCorrect())
       {
         Serial.println("Guess Correct");
@@ -57,6 +55,7 @@ void loop()
         {
           Serial.println("Guess Was Last");
           displayTimer.complete();
+          challengeDisplay.setLetters("SUCCESS!");
         }
         else
         {
