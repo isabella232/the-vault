@@ -12,6 +12,12 @@ LetterLogic::LetterLogic(char r1p1, char r1p2, char r2p1, char r2p2, bool _test_
 //public
 void LetterLogic::setup() 
 {
+	int r = 0;
+	for (int i = A0 ; i <= A7; i++) {
+		r += analogRead(i);
+	}
+	randomSeed(r);
+
 	Serial.println("LetterLogic Setup");
 	r1->begin();
 	r2->begin();
