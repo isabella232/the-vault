@@ -21,7 +21,7 @@ int flichSwitchInValue = 0;
 
 void setup()
 {
-  displayTimer.Setup();
+  displayTimer.setup();
   letterLogic.setup();
 
   Serial.begin(9600);
@@ -32,16 +32,16 @@ void setup()
 
 void loop()
 {
-  displayTimer.Loop();
+  displayTimer.loop();
   letterLogic.loop();
 
   flichSwitchInValue = digitalRead(flichSwitchIn); // read input value
   if (flichSwitchInValue)
   {
-    displayTimer.Stop();
+    displayTimer.stop();
   }
   else
   {
-    displayTimer.Start();
+    displayTimer.start();
   }
 }

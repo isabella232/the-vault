@@ -8,6 +8,7 @@ private:
     LedControl *lc;
 
     bool TEST_MODE = false;
+    bool completed = false;
     long stoppedOffset = 0;
     long timeTarget = 120000;
     long time = 0;
@@ -21,7 +22,7 @@ public:
         lc = new LedControl(dataPin, clkPin, csPin, 1); //12, 13, 10, 1);
     }
 
-    void Setup()
+    void setup()
     {
         if (TEST_MODE)
         {
@@ -33,15 +34,15 @@ public:
         lc->clearDisplay(0);    /* and clear the display */
     }
 
-    void Loop()
+    void loop()
     {
-        if (!stopped)
+        if (!stopped && !completed)
         {
             countdown();
         }
     }
 
-    void Stop()
+    void stop()
     {
         if (!stopped)
         {
@@ -50,9 +51,9 @@ public:
         }
     }
 
-    void Start()
+    void start()
     {
-        if (stopped)
+        if (stopped && time >= 0)
         {
             timeTarget = timeTarget + (millis() - stoppedOffset);
             stoppedOffset = 0;
@@ -83,6 +84,7 @@ public:
             offsetOne = offsetTwo = 0;
 
             stopped = true;
+            completed = true;
         }
 
         minutes = floor(time / 60 / 1000);
