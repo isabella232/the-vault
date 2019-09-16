@@ -70,12 +70,12 @@ public:
         lc = new LedControl(dataPin, clkPin, csPin, 1); //12, 13, 10, 1);
     }
 
-    bool ssStopped()
+    bool isStopped()
     {
         return stopped;
     }
 
-    bool ssComplete()
+    bool isComplete()
     {
         return completed;
     }
