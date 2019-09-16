@@ -22,6 +22,7 @@ long time = 120000;
 
 // Rotary encoder stuff
 Rotary r1 = Rotary(2, 3);
+Rotary r2 = Rotary(4, 5);
 
 char displayedLetter = 'A';
 int correctGuesses = 0;
@@ -78,6 +79,14 @@ char rotateLetter(int dial1Dir, int dial2Dir) {
 	}
 }
 
+void guessedRight() {
+  	Serial.println("Guessed Right");
+}
+
+void guessedWrong() {
+  	Serial.println("Guessed Wrong");
+}
+
 void setup() {
   Serial.begin(9600);
 
@@ -90,6 +99,7 @@ void setup() {
 
   // Listen to changes in rotary encoder
   r1.begin();
+  r2.begin();
 
   displayedLetter = randomLetter();
 }
@@ -97,9 +107,25 @@ void setup() {
 void loop() { 
   timer.run();
 
-  int result = r1.process();
-  if (result) {
-    Serial.println(result == DIR_CW ? "Right" : "Left");
+  int dial1Dir = r1.process();
+  if (dial1Dir) {
+    Serial.println(dial1Dir == DIR_CW ? "Right" : "Left");
+  }
+
+  int dial2Dir = r2.process();
+  if (dial2Dir) {
+  	Serial.println(dial2Dir == DIR_CW ? "Right" : "Left");
+  }
+
+  bool[] switches = {true, true, true, true};
+
+  char currentGuess = rotateLetter(dial1Dir, dial2Dir);
+  char isCorrectGuess = guess(switches, currentGuess);
+
+  if (isCorrectGuess == 1) {
+	  guessedRight();
+  } else if (isCorrectGuess == -1) {
+	  guessedWrong();
   }
 }
 
