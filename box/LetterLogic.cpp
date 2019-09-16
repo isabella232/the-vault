@@ -36,6 +36,7 @@ char LetterLogic::guess(bool switches[], char guess)
 {
 	if (sizeof(switches) != 4)
 	{
+		Serial.println("Not enough switches exist: " + sizeof(switches));
 		return 0;
 	}
 	if (switches[correctGuesses])
