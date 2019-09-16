@@ -1,26 +1,25 @@
 #include "Rotary.h"
 #include "LetterLogic.h"
-
+#include "ChallengeDisplay.h"
 
 //public
-LetterLogic::LetterLogic(char r1p1, char r1p2, char r2p1, char r2p2, bool _test_mode) {
+LetterLogic::LetterLogic(char r1p1, char r1p2, char r2p1, char r2p2, ChallengeDisplay *_challengeDisplay, bool _test_mode) {
 	r1 = new Rotary(r1p1, r1p2);
 	r2 = new Rotary(r2p1, r2p2);
 	TEST_MODE = _test_mode;
+	challengeDisplay = _challengeDisplay;
 }
 
 //public
 void LetterLogic::setup() 
 {
-	int r = 0;
-	for (int i = A0 ; i <= A7; i++) {
-		r += analogRead(i);
-	}
-	randomSeed(r);
+	randomSeed(analogRead(A0));
 
 	Serial.println("LetterLogic Setup");
 	r1->begin();
 	r2->begin();
+
+	challengeDisplay->setRotaryValues(dial1Pos, dial2Pos);
 
 	displayedLetter = randomLetter();
 }
@@ -73,14 +72,14 @@ String LetterLogic::getCurrentLetters()
 //private
 char LetterLogic::randomLetter()
 {
-  //hex 41 is dec 65
+	//hex 41 is dec 65
 	if (TEST_MODE)
 	{
 		return 65 + correctGuesses;
 	}
 	else
 	{
-		return rand() % 26 +65;
+		return random(65, 65+26);
 	}
 }
 
@@ -91,23 +90,25 @@ void LetterLogic::rotateLetter(int dial1Dir, int dial2Dir)
 	{
 		if (dial1Dir == DIR_CW)
 		{
-			dial1Pos = (dial1Pos + 1) % NUM_POSITIONS;
+			dial1Pos = ((dial1Pos + 1)+NUM_POSITIONS) % NUM_POSITIONS;
 		}
 		else
 		{
-			dial1Pos = (dial1Pos - 1) % NUM_POSITIONS;
+			dial1Pos = ((dial1Pos - 1)+NUM_POSITIONS) % NUM_POSITIONS;
 		}
+		Serial.println((int) dial1Pos);
 	}
 	if (dial2Dir)
 	{
 		if (dial2Dir == DIR_CW)
 		{
-			dial2Pos = (dial2Pos + 1) % NUM_POSITIONS;
+			dial2Pos = ((dial2Pos + 1)+NUM_POSITIONS) % NUM_POSITIONS;
 		}
 		else
 		{
-			dial2Pos = (dial2Pos - 1) % NUM_POSITIONS;
+			dial2Pos = ((dial2Pos - 1)+NUM_POSITIONS) % NUM_POSITIONS;
 		}
+		Serial.println((int) dial2Pos);
 	}
 	if (dial1Pos <= 15 && dial2Pos <= 15)
 	{
@@ -118,7 +119,8 @@ void LetterLogic::rotateLetter(int dial1Dir, int dial2Dir)
 		currentGuess = 0;
 	}
 
-   if(dial1Dir || dial2Dir){
-     Serial.println(currentGuess);
-  }
+	if(dial1Dir || dial2Dir){
+		challengeDisplay->setRotaryValues(dial1Pos, dial2Pos);
+		Serial.println(currentGuess);
+	}
 }
