@@ -15,20 +15,10 @@ bool TEST_MODE = true;
  pin 10 is connected to LOAD 
  We have only a single MAX72XX.
  */
-
-void guessedRight()
-{
-  Serial.println("Guessed Right");
-}
-
-void guessedWrong()
-{
-  Serial.println("Guessed Wrong");
-}
 FlickSwitches flickSwitches = FlickSwitches();
 ChallengeDisplay challengeDisplayu = ChallengeDisplay();
 DisplayTimer displayTimer = DisplayTimer(12, 13, 10, TEST_MODE);
-LetterLogic letterLogic = LetterLogic(2, 3, 4, 5, guessedRight, guessedWrong, TEST_MODE);
+LetterLogic letterLogic = LetterLogic(2, 3, 4, 5, TEST_MODE);
 
 int flichSwitchIn = 7; // choose the input pin (for a pushbutton)
 int flichSwitchInValue = 0;
