@@ -27,9 +27,9 @@ void setup()
   letterLogic.setup();
 
   challengeDisplayu.setup();
-  challengeDisplayu.setLetter(letterLogic.currentLetter());
+  challengeDisplayu.setLetters(letterLogic.getCurrentLetters());
 
-  flickSwitch.setup();
+  flickSwitches.setup();
 
   Serial.begin(9600);
 }
@@ -50,12 +50,12 @@ void loop()
         // Open Current Clamp
         if (flickSwitches.isLast())
         {
-          displayTimer.stop(;)
+          displayTimer.stop();
         }
         else
         {
           letterLogic.nextLetter();
-          challengeDisplayu.setLetters(letterLogic.currentLetters());
+          challengeDisplayu.setLetters(letterLogic.getCurrentLetters());
           flickSwitches.selectNextFlicker();
         }
       }
