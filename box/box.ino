@@ -1,7 +1,7 @@
 #include "LedControl.h"
 #include "Rotary.h"
 #include <math.h>
-#include <Display.h>
+#include <DisplayTimer.h>
 
 /*
  Now we need a LedControl to work with.
