@@ -70,7 +70,7 @@ char LetterLogic::randomLetter()
 {
 	if (TEST_MODE)
 	{
-		return 'A' + correctGuesses;
+		return 42 + correctGuesses;
 	}
 	else
 	{
