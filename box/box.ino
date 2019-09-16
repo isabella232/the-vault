@@ -43,8 +43,10 @@ void loop()
 
   if (!displayTimer.isComplete())
   {
+    //Serial.println("timer not completed");
     if (flickSwitches.currentIsFlicked())
     {
+       //Serial.println("Current flicked");
       if (letterLogic.isCorrect())
       {
         // Open Current Clamp

@@ -12,6 +12,7 @@ LetterLogic::LetterLogic(char r1p1, char r1p2, char r2p1, char r2p2, bool _test_
 //public
 void LetterLogic::setup() 
 {
+	Serial.println("LetterLogic Setup");
 	r1->begin();
 	r2->begin();
 
@@ -34,6 +35,7 @@ void LetterLogic::loop()
 	}
 
 	rotateLetter(dial1Dir, dial2Dir);
+  Serial.println(currentGuess);
 }
 
 //public

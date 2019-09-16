@@ -7,9 +7,13 @@ private:
     int _currentSwitch = 0;
 
     int _firstSwitchPin;
+    int _firstSwitchValue;
     int _secondSwitchPin;
+    int _secondSwitchValue;
     int _thirdSwitchPin;
+    int _thirdSwitchValue;
     int _fourthSwitchPin;
+    int _fourthSwitchValue;
 public:
     FlickSwitches(int firstSwitchPin, int secondSwitchPin, int thirdSwitchPin, int fourthSwitchPin)
     {
@@ -19,6 +23,7 @@ public:
         _fourthSwitchPin = fourthSwitchPin;
     }
     void setup() {
+      Serial.println("FlickSwitches Setup");
         pinMode(_firstSwitchPin, INPUT);
         pinMode(_secondSwitchPin, INPUT);
         pinMode(_thirdSwitchPin, INPUT);
@@ -29,16 +34,49 @@ public:
     }
 
     bool currentIsFlicked() {
+    
         switch (_currentSwitch)
         {
         case 0:
-            return digitalRead(_firstSwitchPin) == HIGH;
+            if(digitalRead(_firstSwitchPin) == HIGH)
+            {
+                _firstSwitchValue++;
+                 Serial.println(_firstSwitchValue);
+            }
+            else{
+              _firstSwitchValue = 0;
+            }
+            return _firstSwitchValue > 10;
         case 1:
-            return digitalRead(_secondSwitchPin) == HIGH;
+            if(digitalRead(_secondSwitchPin) == HIGH)
+            {
+                _secondSwitchValue++;
+                 Serial.println(_secondSwitchValue);
+            }
+            else{
+              _secondSwitchValue = 0;
+            }
+            return _secondSwitchValue > 10;
         case 2:
-            return digitalRead(_thirdSwitchPin) == HIGH;
+            if(digitalRead(_thirdSwitchPin) == HIGH)
+            {
+                _thirdSwitchValue++;
+                 Serial.println(_thirdSwitchValue);
+            }
+            else{
+              _thirdSwitchValue = 0;
+            }
+            return _thirdSwitchValue > 10;
         case 3:
-            return digitalRead(_fourthSwitchPin) == HIGH;
+           if(digitalRead(_fourthSwitchPin) == HIGH)
+            {
+                _fourthSwitchValue++;
+                 Serial.println(_fourthSwitchValue);
+            }
+            else{
+              _fourthSwitchValue = 0;
+            }
+            return _fourthSwitchValue > 10;
         
         default:
             break;

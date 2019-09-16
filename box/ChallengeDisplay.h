@@ -9,7 +9,8 @@ public:
     {
     }
 
-    void setup() {}
+    void setup() {
+      Serial.println("ChallengeDisplay Setup");}
     void loop() {}
     void setLetters(String letters) {
 		Serial.println(letters);
