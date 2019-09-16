@@ -18,7 +18,7 @@ bool TEST_MODE = false;
 FlickSwitches flickSwitches = FlickSwitches(6, 8, 9, 11);
 ChallengeDisplay challengeDisplay = ChallengeDisplay();
 DisplayTimer displayTimer = DisplayTimer(12, 13, 10, TEST_MODE);
-LetterLogic letterLogic = LetterLogic(2, 3, 4, 5, TEST_MODE);
+LetterLogic letterLogic = LetterLogic(2, 3, 4, 5, &challengeDisplay, TEST_MODE);
 
 void setup()
 {
@@ -26,9 +26,10 @@ void setup()
 
   displayTimer.setup();
 
+  challengeDisplay.setup();
+
   letterLogic.setup();
 
-  challengeDisplay.setup();
   challengeDisplay.setLetters(letterLogic.getCurrentLetters());
 
   flickSwitches.setup();
