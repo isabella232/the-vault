@@ -41,12 +41,18 @@ char randomLetter() {
 // 1 is correct guess
 // 0 is no guess
 // -1 is wrong guess
-char guess(bool[] switches) {
+char guess(bool[] switches, char guess) {
 	if (sizeof(switches)) {
 		return 0;
 	}
 	if (switches[correctGuesses]) {
-		
+		if (guess == displayedLetter) {
+			return 1;
+		} else {
+			return -1;
+		}
+	} else {
+		return 0;
 	}
 }
 
