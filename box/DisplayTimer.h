@@ -8,6 +8,7 @@ private:
     LedControl *lc;
 
     bool TEST_MODE = false;
+    bool stopped = false;
     bool completed = false;
     long stoppedOffset = 0;
     long timeTarget = 120000;
@@ -63,8 +64,6 @@ private:
     }
 
 public:
-    bool stopped = false;
-
     DisplayTimer(int dataPin, int clkPin, int csPin, bool _TEST_MODE)
     {
         TEST_MODE = _TEST_MODE;
@@ -110,6 +109,11 @@ public:
                 lc->setIntensity(0, 8); /* Set the brightness to a medium values */
             }
         }
+    }
+    void failed()
+    {
+        stopped = true;
+        completed = true;
     }
 
     void stop()

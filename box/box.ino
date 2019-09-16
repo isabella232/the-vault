@@ -22,7 +22,11 @@ int flichSwitchInValue = 0;
 void setup()
 {
   displayTimer.setup();
+
   letterLogic.setup();
+
+  // inputDisplay.setup();
+  // inputDisplay.setLetter(letterLogic.currentLetter());
 
   Serial.begin(9600);
 
@@ -35,13 +39,34 @@ void loop()
   displayTimer.loop();
   letterLogic.loop();
 
-  flichSwitchInValue = digitalRead(flichSwitchIn); // read input value
-  if (flichSwitchInValue)
+  if (!displayTimer.IsComplete())
   {
-    displayTimer.stop();
+    // if (FlickSwitch.CurrentIsFlicked())
+    // {
+    //   if (letterLogic.isCorrect())
+    //   {
+    //     letterLogic.nextLetter();
+    //     inputDisplay.setLetter(letterLogic.currentLetter());
+    //     // Open Clamp
+    //     if (currentFlickSwitch.isLast())
+    //     {
+    //       displayTimer.stop(;)
+    //     }
+    //   }
+    //   else
+    //   {
+    //     displayTimer.failed();
+    //   }
   }
-  else
-  {
-    displayTimer.start();
-  }
+}
+
+flichSwitchInValue = digitalRead(flichSwitchIn); // read input value
+if (flichSwitchInValue)
+{
+  displayTimer.stop();
+}
+else
+{
+  displayTimer.start();
+}
 }
