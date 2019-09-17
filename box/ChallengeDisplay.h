@@ -37,7 +37,7 @@ public:
     Serial.println(letters);
   }
 
-  void setRotaryValues(char dial1, char dial2)
+  void setRotaryValues(char dial2, char dial1)
   {
   	lcd.setCursor(1,0);
 	String message = "";
