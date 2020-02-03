@@ -5,24 +5,27 @@
 #include "LetterLogic.h"
 #include "ChallengeDisplay.h"
 #include "FlickSwitches.h"
+#include "LatchControl.h"
 
-bool TEST_MODE = false;
+bool TEST_MODE = true;
 /*
- Now we need a LedControl to work with.
+  Now we need a LedControl to work with.
  ***** These pin numbers will probably not work with your hardware *****
- pin 12 is connected to the DataIn 
- pin 13 is connected to the CLK 
- pin 10 is connected to LOAD 
- We have only a single MAX72XX.
- */
-FlickSwitches flickSwitches = FlickSwitches(6, 8, 9, 11);
+  pin 12 is connected to the DataIn
+  pin 13 is connected to the CLK
+  pin 10 is connected to LOAD
+  We have only a single MAX72XX.
+*/
+FlickSwitches flickSwitches = FlickSwitches(6, 7, 8, 9);
 ChallengeDisplay challengeDisplay = ChallengeDisplay();
 DisplayTimer displayTimer = DisplayTimer(12, 13, 10, TEST_MODE);
-LetterLogic letterLogic = LetterLogic(2, 3, 4, 5, &challengeDisplay, TEST_MODE);
+LetterLogic letterLogic = LetterLogic(4, 5,2, 3, &challengeDisplay, TEST_MODE);
+LatchControl latchControl = LatchControl(A0, A1, A2, A3);
 
-void setup()
-{
+void setup(){
   Serial.begin(9600);
+
+  latchControl.setup();
 
   displayTimer.setup();
 
@@ -35,8 +38,8 @@ void setup()
   flickSwitches.setup();
 }
 
-void loop()
-{
+void loop(){
+  latchControl.loop();
   displayTimer.loop();
   letterLogic.loop();
   flickSwitches.loop();
@@ -51,12 +54,11 @@ void loop()
       if (letterLogic.isCorrect())
       {
         Serial.println("Guess Correct");
-        // Open Current Clamp
-        if (flickSwitches.isLast())
-        {
+        latchControl.openLatch(flickSwitches.getCurrentSwitch());
+        
+        if (flickSwitches.isLast()){
           Serial.println("Guess Was Last");
-          displayTimer.complete();
-          challengeDisplay.setLetters("SUCCESS!");
+          displaySuccess();
         }
         else
         {
@@ -72,5 +74,32 @@ void loop()
         displayTimer.failed();
       }
     }
-  }
+  }else{
+      displayFailure();
+    }
+}
+
+void displayFailure(){
+    challengeDisplay.setLetters("FAILURE!");
+    while(!flickSwitches.isAllReset()){
+      latchControl.loop();
+      displayTimer.loop();
+    }
+    resetGame();
+}
+
+void displaySuccess(){
+    displayTimer.complete();
+    challengeDisplay.setLetters("SUCCESS!");
+    while(!flickSwitches.isAllReset()){
+      latchControl.loop();
+      displayTimer.loop();
+    }
+    resetGame();
+}
+
+void resetGame(){
+  Serial.println("Resetting game");
+  while(true){};
+  //TODO Reset game elements
 }

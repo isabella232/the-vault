@@ -26,10 +26,10 @@ public:
     void setup()
     {
         Serial.println("FlickSwitches Setup");
-        pinMode(_firstSwitchPin, INPUT);
-        pinMode(_secondSwitchPin, INPUT);
-        pinMode(_thirdSwitchPin, INPUT);
-        pinMode(_fourthSwitchPin, INPUT);
+        pinMode(_firstSwitchPin, INPUT_PULLUP);
+        pinMode(_secondSwitchPin, INPUT_PULLUP);
+        pinMode(_thirdSwitchPin, INPUT_PULLUP);
+        pinMode(_fourthSwitchPin, INPUT_PULLUP);
     }
     void loop()
     {
@@ -41,7 +41,7 @@ public:
         switch (_currentSwitch)
         {
         case 0:
-            if (digitalRead(_firstSwitchPin) == HIGH)
+            if (digitalRead(_firstSwitchPin) == LOW)
             {
                 _firstSwitchValue++;
             }
@@ -51,7 +51,7 @@ public:
             }
             return _firstSwitchValue > 10;
         case 1:
-            if (digitalRead(_secondSwitchPin) == HIGH)
+            if (digitalRead(_secondSwitchPin) == LOW)
             {
                 _secondSwitchValue++;
             }
@@ -61,7 +61,7 @@ public:
             }
             return _secondSwitchValue > 10;
         case 2:
-            if (digitalRead(_thirdSwitchPin) == HIGH)
+            if (digitalRead(_thirdSwitchPin) == LOW)
             {
                 _thirdSwitchValue++;
             }
@@ -71,7 +71,7 @@ public:
             }
             return _thirdSwitchValue > 10;
         case 3:
-            if (digitalRead(_fourthSwitchPin) == HIGH)
+            if (digitalRead(_fourthSwitchPin) == LOW)
             { 
                 _fourthSwitchValue++;
             }
@@ -89,6 +89,11 @@ public:
     {
         return _currentSwitch == 3;
     }
+
+    int getCurrentSwitch(){
+      return _currentSwitch;
+    }
+    
     void selectNextFlicker()
     {
       Serial.println("FlickSwitches selectNextFlicker");
@@ -101,6 +106,13 @@ public:
         {
             Serial.println("No more switches");
         }
+    }
+
+    bool isAllReset(){
+       return (digitalRead(_firstSwitchPin) == HIGH && 
+       digitalRead(_secondSwitchPin) == HIGH && 
+       digitalRead(_thirdSwitchPin) == HIGH && 
+       digitalRead(_fourthSwitchPin) == HIGH);
     }
 };
 #endif

@@ -13,7 +13,7 @@ LetterLogic::LetterLogic(char r1p1, char r1p2, char r2p1, char r2p2, ChallengeDi
 //public
 void LetterLogic::setup() 
 {
-	randomSeed(analogRead(A0));
+	randomSeed(analogRead(A0));//TODO Issue as A0 is used
 
 	Serial.println("LetterLogic Setup");
 	r1->begin();
