@@ -12,10 +12,6 @@ private:
 public:
   ChallengeDisplay()
   {
-    // Setup Midas 2x8 LCD display
-    // 0x3C shifted << 1
-    //
-    //lcd = new ST7036(2, 8, 0x78);
   }
 
   void setup()
@@ -40,7 +36,7 @@ public:
   void setRotaryValues(char dial2, char dial1)
   {
   	lcd.setCursor(1,0);
-	String message = "";
+	String message = "   ";
 	if (dial1 <= 9) {
 		message += (int) dial1;
 	} else {
@@ -65,7 +61,7 @@ public:
 				break;
 		}
 	}
-	message += ", ";
+	message += "";
 	if (dial2 <= 9) {
 		message += (int) dial2;
 	} else {
