@@ -14,13 +14,7 @@ private:
   bool succeeded = false;
 
   byte box[8] = {
-    B11111,
-    B11111,
-    B11111,
-    B11111,
-    B11111,
-    B11111,
-    B11111,
+      B11111, B11111, B11111, B11111, B11111, B11111, B11111,
   };
 
 public:
