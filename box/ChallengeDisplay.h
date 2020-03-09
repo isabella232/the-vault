@@ -22,16 +22,33 @@ public:
   void loop() {}
 
   void setLetters(String letters) {
+    Serial.println("LETTERS:" +letters);
     lcd.setCursor(0, 0);
     lcd.print(letters);
-    Serial.println("LETTERS:" +letters);
   }
 
   void setResetMessage() {
+    lcd.clear();
     lcd.setCursor(0, 0);
     lcd.print(" PLEASE");
     lcd.setCursor(1, 0);
     lcd.print(" RESET!");
+  }
+
+  void setFailureMessage() {
+    lcd.clear();
+    lcd.setCursor(0, 0);
+    lcd.print("FAILURE!");
+    lcd.setCursor(1, 0);
+    lcd.print("        ");
+  }
+
+  void setSuccessMessage() {
+    lcd.clear();
+    lcd.setCursor(0, 0);
+    lcd.print("SUCCESS!");
+    lcd.setCursor(1, 0);
+    lcd.print("        ");
   }
 
   void setRotaryValues(char dial2, char dial1) {

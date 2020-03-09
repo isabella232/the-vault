@@ -8,14 +8,7 @@
 #include <math.h>
 
 bool TEST_MODE = true;
-/*
-  Now we need a LedControl to work with.
- ***** These pin numbers will probably not work with your hardware *****
-  pin 12 is connected to the DataIn
-  pin 13 is connected to the CLK
-  pin 10 is connected to LOAD
-  We have only a single MAX72XX.
-*/
+
 FlickSwitches flickSwitches = FlickSwitches(6, 7, 8, 9);
 ChallengeDisplay challengeDisplay = ChallengeDisplay();
 DisplayTimer displayTimer = DisplayTimer(12, 13, 10, TEST_MODE);
@@ -78,27 +71,18 @@ void loop() {
 }
 
 void displayFailure() {
-  challengeDisplay.setLetters("FAILURE!");
+  challengeDisplay.setFailureMessage();
   while (!flickSwitches.isAllReset()) {
     latchControl.loop();
     displayTimer.loop();
   }
-  resetGame();
 }
 
 void displaySuccess() {
+  challengeDisplay.setSuccessMessage();
   displayTimer.complete();
-  challengeDisplay.setLetters("SUCCESS!");
   while (!flickSwitches.isAllReset()) {
     latchControl.loop();
     displayTimer.loop();
   }
-  resetGame();
-}
-
-void resetGame() {
-  Serial.println("Resetting game");
-  while (true) {
-  };
-  // TODO Reset game elements
 }
