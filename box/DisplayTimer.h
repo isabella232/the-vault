@@ -58,7 +58,7 @@ private:
     lc->setDigit(0, 5, third, false);
     lc->setDigit(0, 4, fourth, true);
     lc->setDigit(0, 3, fifth, false);
-    lc->setDigit(0, 2, sixth, true);
+    lc->setDigit(0, 2, sixth, false);
     lc->setDigit(0, 1, seventh, false);
     lc->setDigit(0, 0, eighth, false);
   }
