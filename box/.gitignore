@@ -1,1 +1,4 @@
 .vscode
+box.arduino.avr.uno.elf
+box.arduino.avr.uno.hex
+box.arduino.avr.uno.with_bootloader.hex
