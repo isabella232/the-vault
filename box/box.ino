@@ -37,9 +37,10 @@ void setup() {
 
   flickSwitches.setup();
 
-    while (!flickSwitches.isAllReset()) {
-        challengeDisplay.setLetters("RESET!");
-    }
+  while (!flickSwitches.isAllReset()) {
+    challengeDisplay.setLetters("RESET!");
+    exit(0);
+  }
 }
 
 void loop() {
