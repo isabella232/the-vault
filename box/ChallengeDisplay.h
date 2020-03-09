@@ -8,6 +8,9 @@ class ChallengeDisplay {
 private:
   ST7036 lcd = ST7036(2, 8, 0x78);
 
+  bool failed = false;
+  bool succeeded = false;
+
 public:
   ChallengeDisplay() {}
 
@@ -35,19 +38,27 @@ public:
   }
 
   void setFailureMessage() {
+    if (failed) {
+        return;
+    }
     lcd.clear();
     lcd.setCursor(0, 0);
     lcd.print("FAILURE!");
     lcd.setCursor(1, 0);
     lcd.print("        ");
+    failed = true;
   }
 
   void setSuccessMessage() {
+    if (succeeded) {
+        return;
+    }
     lcd.clear();
     lcd.setCursor(0, 0);
     lcd.print("SUCCESS!");
     lcd.setCursor(1, 0);
     lcd.print("        ");
+    succeeded = true;
   }
 
   void setRotaryValues(char dial2, char dial1) {

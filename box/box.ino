@@ -43,29 +43,31 @@ void loop() {
   flickSwitches.loop();
   challengeDisplay.loop();
 
-  // If we have run out of time, then we show the failure message and nothing else
-  if (displayTimer.isComplete()) {
+  // If we have run out of time, then we show the failure message and nothing
+  // else
+  if (displayTimer.isComplete() && displayTimer.isStopped()) {
     displayFailure();
     return;
   }
 
-  // We need to wait for the user to flick the current switch before we can decide what to do
+  // We need to wait for the user to flick the current switch before we can
+  // decide what to do
   if (!flickSwitches.currentIsFlicked()) {
     return;
   }
-  
+
   // If the guess was not correct we tell the user that they failed
   if (!letterLogic.isCorrect()) {
-    // Calling failed here causes the failure message to be display in the if statement above
+    // Calling failed here causes the failure message to be display in the if
+    // statement above
     displayTimer.failed();
     return;
   }
 
   // The users guess was correct, so we open the current latch
   latchControl.openLatch(flickSwitches.getCurrentSwitch());
-  
 
-  // If this was not the last switch, we need to set the next letter and 
+  // If this was not the last switch, we need to set the next letter and
   if (!flickSwitches.isLast()) {
     letterLogic.nextLetter();
     challengeDisplay.setLetters(letterLogic.getCurrentLetters());
@@ -73,7 +75,8 @@ void loop() {
     return;
   }
 
-  // Once we get here, the switch is in fact the last switch, so we display success
+  // Once we get here, the switch is in fact the last switch, so we display
+  // success
   displaySuccess();
 }
 
