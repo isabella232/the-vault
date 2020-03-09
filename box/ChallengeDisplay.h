@@ -10,6 +10,9 @@ class ChallengeDisplay {
 private:
   ST7036 lcd = ST7036(2, 8, 0x78);
 
+  String currentAnswerString = "";
+  String answerHistory = "";
+
   bool failed = false;
   bool succeeded = false;
 
@@ -71,7 +74,7 @@ public:
     lcd.setCursor(0, 0);
     lcd.print(" PLEASE");
     lcd.setCursor(1, 0);
-    lcd.print(" RESET!");    
+    lcd.print(" RESET!");
   }
 
   void writeBox(int row, int column) {
@@ -81,7 +84,7 @@ public:
 
   void setFailureMessage() {
     if (failed) {
-        return;
+      return;
     }
     lcd.clear();
     lcd.setCursor(0, 0);
@@ -93,7 +96,7 @@ public:
 
   void setSuccessMessage() {
     if (succeeded) {
-        return;
+      return;
     }
     lcd.clear();
     lcd.setCursor(0, 0);
@@ -105,7 +108,7 @@ public:
 
   void setRotaryValues(char dial2, char dial1) {
     lcd.setCursor(1, 0);
-    String message = "   ";
+    String message = "";
     if (dial1 <= 9) {
       message += (int)dial1;
     } else {
@@ -155,7 +158,15 @@ public:
         break;
       }
     }
-    lcd.print(message);
+    lcd.print(answerHistory + message);
+    currentAnswerString = message;
+  }
+
+  void setAnswerString() {
+    answerHistory = answerHistory + currentAnswerString;
+    lcd.setCursor(1,0);
+    lcd.print(answerHistory + currentAnswerString);
+    Serial.println("setAnswerString: " + answerHistory);
   }
 };
 #endif

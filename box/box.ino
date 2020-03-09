@@ -57,7 +57,7 @@ void loop() {
 
   // We need to wait for the user to flick the current switch before we can
   // decide what to do
-  if (!flickSwitches.currentIsFlicked()) {
+  if (!flickSwitches.currentIsFlicked()) {    
     return;
   }
 
@@ -71,6 +71,8 @@ void loop() {
 
   // The users guess was correct, so we open the current latch
   latchControl.openLatch(flickSwitches.getCurrentSwitch());
+  // We also save their answer to a string and display it to them
+  challengeDisplay.setAnswerString();
 
   // If this was not the last switch, we need to set the next letter and
   if (!flickSwitches.isLast()) {
