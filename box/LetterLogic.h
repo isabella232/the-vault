@@ -3,14 +3,21 @@
 
 #include "ChallengeDisplay.h"
 #include "Rotary.h"
+#include <Crypto.h>
+#include <RNG.h>
 #include <avr/eeprom.h>
+
+// Size of randomness
+#define randomSize 7
 
 class LetterLogic {
   Rotary *r1;
   Rotary *r2;
   bool TEST_MODE;
 
-  char displayedLetter = 'A';
+  String letters = "ABCDEFGHIJKLMNOPQRSTUVXYZ";
+
+  char displayedLetter;
   char currentGuess;
   String currentLetters = "";
   int correctGuesses = 0;
@@ -20,13 +27,30 @@ class LetterLogic {
   char dial1Pos = 0;
   char dial2Pos = 0;
 
+  
+  byte key[randomSize];
+
+
 private:
   char randomLetter() {
-    // hex 41 is dec 65
+    int number;
+    RNG.rand(key, sizeof(key));
+
     if (TEST_MODE) {
       return 65 + correctGuesses;
+    }
+
+
+    for (int i  = 0; i < randomSize; i++) {
+      number += key[i];
+    }
+
+    if (correctGuesses == 0 ) {
+      return letters.charAt(number % 6);
+      // First letter should be ABCDEF
     } else {
-      return random(65, 65 + 26);
+      // 2nd to 4th letter can be any letter
+      return letters.charAt(number % letters.length());
     }
   }
 
@@ -69,7 +93,8 @@ public:
   }
 
   void setup() {
-    randomSeed(analogRead(A0)); // TODO Issue as A0 is used
+    RNG.begin("The Vault 1.0");
+    // randomSeed(analogRead(A0)); // TODO Issue as A0 is used
 
     Serial.println("LetterLogic Setup");
     r1->begin();
@@ -81,6 +106,9 @@ public:
   }
 
   void loop() {
+    RNG.loop();
+
+
     int dial1Dir = r1->process();
     if (dial1Dir) {
       Serial.println(dial1Dir == DIR_CW ? "Right" : "Left");
