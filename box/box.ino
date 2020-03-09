@@ -56,22 +56,17 @@ void loop() {
   
   // If the guess was not correct we tell the user that they failed
   if (!letterLogic.isCorrect()) {
-    Serial.println("Guess Wrong");
-
     // Calling failed here causes the failure message to be display in the if statement above
     displayTimer.failed();
     return;
   }
 
-  // The users guess was correct and we move on
-  Serial.println("Guess Correct");
-  // Open the current latch
+  // The users guess was correct, so we open the current latch
   latchControl.openLatch(flickSwitches.getCurrentSwitch());
   
 
   // If this was not the last switch, we need to set the next letter and 
   if (!flickSwitches.isLast()) {
-    Serial.println("Select Next");
     letterLogic.nextLetter();
     challengeDisplay.setLetters(letterLogic.getCurrentLetters());
     flickSwitches.selectNextFlicker();

@@ -40,7 +40,7 @@ public:
     if (hasReleased) {
       long currentTime = millis() - 500;
       if (millisSinceRelease < currentTime) {
-        Serial.println("Resetting latches");
+        // Serial.println("Resetting latches");
         resetLatchOpen();
         hasReleased = false;
       }
@@ -63,8 +63,8 @@ public:
       break;
     }
 
-    Serial.print("Releasing latch: ");
-    Serial.println(selectedLatch);
+    // Serial.print("Releasing latch: ");
+    // Serial.println(selectedLatch);
     digitalWrite(selectedLatch, LOW);
     hasReleased = true;
     millisSinceRelease = millis();

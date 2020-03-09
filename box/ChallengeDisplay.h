@@ -22,9 +22,8 @@ public:
   void loop() {}
 
   void setLetters(String letters) {
-    Serial.println("LETTERS:" +letters);
     lcd.setCursor(0, 0);
-    lcd.print(letters);
+    lcd.print("  " + letters);
   }
 
   void setResetMessage() {
