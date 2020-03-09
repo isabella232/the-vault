@@ -1,11 +1,11 @@
-#include "Rotary.h"
-#include "DisplayTimer.h"
-#include "LedControl.h"
-#include <math.h>
-#include "LetterLogic.h"
 #include "ChallengeDisplay.h"
+#include "DisplayTimer.h"
 #include "FlickSwitches.h"
 #include "LatchControl.h"
+#include "LedControl.h"
+#include "LetterLogic.h"
+#include "Rotary.h"
+#include <math.h>
 
 bool TEST_MODE = true;
 /*
@@ -19,10 +19,10 @@ bool TEST_MODE = true;
 FlickSwitches flickSwitches = FlickSwitches(6, 7, 8, 9);
 ChallengeDisplay challengeDisplay = ChallengeDisplay();
 DisplayTimer displayTimer = DisplayTimer(12, 13, 10, TEST_MODE);
-LetterLogic letterLogic = LetterLogic(4, 5,2, 3, &challengeDisplay, TEST_MODE);
+LetterLogic letterLogic = LetterLogic(4, 5, 2, 3, &challengeDisplay, TEST_MODE);
 LatchControl latchControl = LatchControl(A0, A1, A2, A3);
 
-void setup(){
+void setup() {
   Serial.begin(9600);
 
   latchControl.setup();
@@ -33,73 +33,67 @@ void setup(){
 
   letterLogic.setup();
 
-  challengeDisplay.setLetters(letterLogic.getCurrentLetters());
+  challengeDisplay.setLetters("  " + letterLogic.getCurrentLetters());
 
   flickSwitches.setup();
 }
 
-void loop(){
+void loop() {
   latchControl.loop();
   displayTimer.loop();
   letterLogic.loop();
   flickSwitches.loop();
   challengeDisplay.loop();
 
-  if (!displayTimer.isComplete())
-  {
-    //Serial.println("timer not completed");
-    if (flickSwitches.currentIsFlicked())
-    {
+  if (!displayTimer.isComplete()) {
+    // Serial.println("timer not completed");
+    if (flickSwitches.currentIsFlicked()) {
       Serial.println("Current flicked");
-      if (letterLogic.isCorrect())
-      {
+      if (letterLogic.isCorrect()) {
         Serial.println("Guess Correct");
         latchControl.openLatch(flickSwitches.getCurrentSwitch());
-        
-        if (flickSwitches.isLast()){
+
+        if (flickSwitches.isLast()) {
           Serial.println("Guess Was Last");
           displaySuccess();
-        }
-        else
-        {
+        } else {
           Serial.println("Select Next");
           letterLogic.nextLetter();
           challengeDisplay.setLetters(letterLogic.getCurrentLetters());
           flickSwitches.selectNextFlicker();
         }
-      }
-      else
-      {
+      } else {
         Serial.println("Guess Wrong");
         displayTimer.failed();
       }
     }
-  }else{
-      displayFailure();
-    }
+  } else {
+    displayFailure();
+  }
 }
 
-void displayFailure(){
-    challengeDisplay.setLetters("FAILURE!");
-    while(!flickSwitches.isAllReset()){
-      latchControl.loop();
-      displayTimer.loop();
-    }
-    resetGame();
+void displayFailure() {
+  challengeDisplay.setLetters("FAILURE!");
+  while (!flickSwitches.isAllReset()) {
+    latchControl.loop();
+    displayTimer.loop();
+  }
+  resetGame();
 }
 
-void displaySuccess(){
-    displayTimer.complete();
-    challengeDisplay.setLetters("SUCCESS!");
-    while(!flickSwitches.isAllReset()){
-      latchControl.loop();
-      displayTimer.loop();
-    }
-    resetGame();
+void displaySuccess() {
+  displayTimer.complete();
+  challengeDisplay.setLetters("SUCCESS!");
+  while (!flickSwitches.isAllReset()) {
+    latchControl.loop();
+    displayTimer.loop();
+  }
+  resetGame();
 }
 
-void resetGame(){
+void resetGame() {
   Serial.println("Resetting game");
-  while(true){};
-  //TODO Reset game elements
+  while (true) {
+  };
+  // TODO Reset game elements
 }
