@@ -7,7 +7,7 @@
 #include "Rotary.h"
 #include <math.h>
 
-bool TEST_MODE = true;
+bool TEST_MODE = false;
 
 FlickSwitches flickSwitches = FlickSwitches(6, 7, 8, 9);
 ChallengeDisplay challengeDisplay = ChallengeDisplay();
@@ -47,6 +47,11 @@ void loop() {
   // else
   if (displayTimer.isComplete() && displayTimer.isStopped()) {
     displayFailure();
+    return;
+  }
+
+  if(flickSwitches.laterSwitchFlicked()) {
+    displayTimer.failed();
     return;
   }
 

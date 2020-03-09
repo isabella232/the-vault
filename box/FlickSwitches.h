@@ -32,41 +32,34 @@ public:
   void loop() {}
 
   bool currentIsFlicked() {
-
     switch (_currentSwitch) {
-    case 0:
-      if (digitalRead(_firstSwitchPin) == LOW) {
-        _firstSwitchValue++;
-      } else {
-        _firstSwitchValue = 0;
-      }
-      return _firstSwitchValue > 10;
-    case 1:
-      if (digitalRead(_secondSwitchPin) == LOW) {
-        _secondSwitchValue++;
-      } else {
-        _secondSwitchValue = 0;
-      }
-      return _secondSwitchValue > 10;
-    case 2:
-      if (digitalRead(_thirdSwitchPin) == LOW) {
-        _thirdSwitchValue++;
-      } else {
-        _thirdSwitchValue = 0;
-      }
-      return _thirdSwitchValue > 10;
-    case 3:
-      if (digitalRead(_fourthSwitchPin) == LOW) {
-        _fourthSwitchValue++;
-      } else {
-        _fourthSwitchValue = 0;
-      }
-      return _fourthSwitchValue > 10;
+      case 0:
+        return firstFlicked();
+      case 1:
+        return secondFlicked();
+      case 2:
+        return thirdFlicked();
+      case 3:
+        return fourthFlicked();
+      default:
+        break;
+    }  
+  }
 
-    default:
-      break;
+  bool laterSwitchFlicked() {
+    switch (_currentSwitch) {
+      case 0:
+        return secondFlicked() || thirdFlicked() || fourthFlicked();
+      case 1:
+        return  thirdFlicked() || fourthFlicked();
+      case 2:
+        return  fourthFlicked();
+      case 3:
+        // There are no more switches after the fourth one
+        return false;
     }
   }
+
   bool isLast() { return _currentSwitch == 3; }
 
   int getCurrentSwitch() { return _currentSwitch; }
@@ -86,6 +79,22 @@ public:
             digitalRead(_secondSwitchPin) == HIGH &&
             digitalRead(_thirdSwitchPin) == HIGH &&
             digitalRead(_fourthSwitchPin) == HIGH);
+  }
+
+  bool firstFlicked() {
+    return digitalRead(_firstSwitchPin) == LOW;
+  }
+
+  bool secondFlicked() {
+    return digitalRead(_secondSwitchPin) == LOW;
+  }
+
+  bool thirdFlicked() {
+    return digitalRead(_thirdSwitchPin) == LOW;
+  }
+
+  bool fourthFlicked() {
+    return digitalRead(_fourthSwitchPin) == LOW;
   }
 };
 #endif
