@@ -27,6 +27,13 @@ public:
     Serial.println("LETTERS:" +letters);
   }
 
+  void setResetMessage() {
+    lcd.setCursor(0, 0);
+    lcd.print(" PLEASE");
+    lcd.setCursor(1, 0);
+    lcd.print(" RESET!");
+  }
+
   void setRotaryValues(char dial2, char dial1) {
     lcd.setCursor(1, 0);
     String message = "   ";

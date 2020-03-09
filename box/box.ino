@@ -33,12 +33,12 @@ void setup() {
 
   letterLogic.setup();
 
-  challengeDisplay.setLetters("  " + letterLogic.getCurrentLetters());
+  challengeDisplay.setLetters(letterLogic.getCurrentLetters());
 
   flickSwitches.setup();
 
   while (!flickSwitches.isAllReset()) {
-    challengeDisplay.setLetters("RESET!");
+    challengeDisplay.setResetMessage();
     exit(0);
   }
 }
