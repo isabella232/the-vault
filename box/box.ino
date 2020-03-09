@@ -36,6 +36,10 @@ void setup() {
   challengeDisplay.setLetters("  " + letterLogic.getCurrentLetters());
 
   flickSwitches.setup();
+
+    while (!flickSwitches.isAllReset()) {
+        challengeDisplay.setLetters("RESET!");
+    }
 }
 
 void loop() {
