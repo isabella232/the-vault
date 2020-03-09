@@ -43,31 +43,43 @@ void loop() {
   flickSwitches.loop();
   challengeDisplay.loop();
 
-  if (!displayTimer.isComplete()) {
-    // Serial.println("timer not completed");
-    if (flickSwitches.currentIsFlicked()) {
-      Serial.println("Current flicked");
-      if (letterLogic.isCorrect()) {
-        Serial.println("Guess Correct");
-        latchControl.openLatch(flickSwitches.getCurrentSwitch());
-
-        if (flickSwitches.isLast()) {
-          Serial.println("Guess Was Last");
-          displaySuccess();
-        } else {
-          Serial.println("Select Next");
-          letterLogic.nextLetter();
-          challengeDisplay.setLetters(letterLogic.getCurrentLetters());
-          flickSwitches.selectNextFlicker();
-        }
-      } else {
-        Serial.println("Guess Wrong");
-        displayTimer.failed();
-      }
-    }
-  } else {
+  // If we have run out of time, then we show the failure message and nothing else
+  if (displayTimer.isComplete()) {
     displayFailure();
+    return;
   }
+
+  // We need to wait for the user to flick the current switch before we can decide what to do
+  if (!flickSwitches.currentIsFlicked()) {
+    return;
+  }
+  
+  // If the guess was not correct we tell the user that they failed
+  if (!letterLogic.isCorrect()) {
+    Serial.println("Guess Wrong");
+
+    // Calling failed here causes the failure message to be display in the if statement above
+    displayTimer.failed();
+    return;
+  }
+
+  // The users guess was correct and we move on
+  Serial.println("Guess Correct");
+  // Open the current latch
+  latchControl.openLatch(flickSwitches.getCurrentSwitch());
+  
+
+  // If this was not the last switch, we need to set the next letter and 
+  if (!flickSwitches.isLast()) {
+    Serial.println("Select Next");
+    letterLogic.nextLetter();
+    challengeDisplay.setLetters(letterLogic.getCurrentLetters());
+    flickSwitches.selectNextFlicker();
+    return;
+  }
+
+  // Once we get here, the switch is in fact the last switch, so we display success
+  displaySuccess();
 }
 
 void displayFailure() {
