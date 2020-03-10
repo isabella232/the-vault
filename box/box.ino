@@ -4,6 +4,7 @@
 #include "LatchControl.h"
 #include "LedControl.h"
 #include "LetterLogic.h"
+#include "LEDStrip.h"
 #include "Rotary.h"
 #include <math.h>
 
@@ -14,6 +15,8 @@ ChallengeDisplay challengeDisplay = ChallengeDisplay();
 DisplayTimer displayTimer = DisplayTimer(12, 13, 10, TEST_MODE);
 LetterLogic letterLogic = LetterLogic(4, 5, 2, 3, &challengeDisplay, TEST_MODE);
 LatchControl latchControl = LatchControl(A0, A1, A2, A3);
+// The LED Strip uses pin 11
+LEDStrip ledStrip = LEDStrip();
 
 void setup() {
   Serial.begin(9600);
@@ -30,6 +33,8 @@ void setup() {
 
   flickSwitches.setup();
 
+  ledStrip.setup();
+
   while (!flickSwitches.isAllReset()) {
     challengeDisplay.setResetMessage();
     exit(0);
@@ -42,6 +47,8 @@ void loop() {
   letterLogic.loop();
   flickSwitches.loop();
   challengeDisplay.loop();
+  ledStrip.loop();
+
 
   // If we have run out of time, then we show the failure message and nothing
   // else
