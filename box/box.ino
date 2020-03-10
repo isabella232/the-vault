@@ -8,7 +8,7 @@
 #include "Rotary.h"
 #include <math.h>
 
-bool TEST_MODE = false;
+bool TEST_MODE = true;
 
 FlickSwitches flickSwitches = FlickSwitches(6, 7, 8, 9);
 ChallengeDisplay challengeDisplay = ChallengeDisplay();
@@ -96,7 +96,8 @@ void loop() {
 
 void displayFailure() {
   challengeDisplay.setFailureMessage();
-  while (!flickSwitches.isAllReset()) {
+  while (true) {
+    ledStrip.showFailure();
     latchControl.loop();
     displayTimer.loop();
   }
@@ -105,7 +106,8 @@ void displayFailure() {
 void displaySuccess() {
   challengeDisplay.setSuccessMessage();
   displayTimer.complete();
-  while (!flickSwitches.isAllReset()) {
+  while (true) {
+    ledStrip.showSuccess();
     latchControl.loop();
     displayTimer.loop();
   }

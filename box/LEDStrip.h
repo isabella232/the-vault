@@ -12,36 +12,61 @@ class LEDStrip {
 private:
   unsigned long startMillis;
   unsigned long currentMillis;
-  const unsigned long period = 30;
   int x = 0;
+  bool on = false;
 public:
   LEDStrip() {}
 
   void setup() { 
     startMillis = millis();
     FastLED.addLeds<NEOPIXEL, DATA_PIN>(leds, NUM_LEDS);
+
+    for (int i = 0; i < NUM_LEDS; i++) {
+      leds[i] = CRGB::Black;    
+    }
+    FastLED.show();
   }
 
   void loop() {
-    currentMillis = millis();
-    if (currentMillis - startMillis >= period) {
-      // Every 30ms do this: 
-      startMillis = currentMillis;
-      
-      leds[x] = CRGB::Blue;
-      FastLED.show();
-      leds[x] = CRGB::Black;
-
-
-      if (++x >= NUM_LEDS) x = 0;
-    }
-  }
-
-  void showSuccess() {
    
   }
 
-  void showFailure() {}
+  void showSuccess() {
+    currentMillis = millis();
+    if (currentMillis - startMillis >= 1000) {
+      startMillis = currentMillis;
+
+      for (int i = 0; i < NUM_LEDS; i++) {
+        if (on) {
+          leds[i] = CRGB::Black;
+          FastLED.show();
+        } else {
+          leds[i] = CRGB::Green;
+          FastLED.show();
+        }    
+      }
+      
+      on = !on;
+    }
+  }
+
+  void showFailure() {
+    currentMillis = millis();
+    if (currentMillis - startMillis >= 1000) {
+      // Every 30ms do this: 
+      startMillis = currentMillis;
+
+      for (int i = 0; i < NUM_LEDS; i++) {
+        if (on) {
+          leds[i] = CRGB::Black;
+        } else {
+          leds[i] = CRGB::Red;
+        }    
+      }
+      FastLED.show();
+      on = !on;
+    }
+  }
 };
 
 #endif
