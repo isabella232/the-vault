@@ -76,7 +76,7 @@ public:
   void setup() {
     Serial.println("DisplayTimer Setup");
     if (TEST_MODE) {
-      timeTarget = 120000;
+      timeTarget = 60000;
     }
 
     lc->shutdown(0, false); // The MAX72XX is in power-saving mode on startup,
@@ -120,6 +120,14 @@ public:
 
       stopped = false;
     }
+  }
+
+  long getTime() {
+    return floor(time / 1000);
+  }
+
+  long getTarget() {
+    return floor(timeTarget / 1000);
   }
 };
 #endif
