@@ -2,7 +2,10 @@
 #define LEDStrip_h
 
 #include <FastLED.h>
+#include "DisplayTimer.h"
 
+
+// Remember to update the numbers responsible for setting the color for countdown
 #define NUM_LEDS 60
 #define DATA_PIN 11
 
@@ -14,8 +17,12 @@ private:
   unsigned long currentMillis;
   int x = 0;
   bool on = false;
+  DisplayTimer *timer;
+
 public:
-  LEDStrip() {}
+  LEDStrip(DisplayTimer *_timer) {
+    timer = _timer;
+  }
 
   void setup() { 
     startMillis = millis();
@@ -28,7 +35,35 @@ public:
   }
 
   void loop() {
-   
+    currentMillis = millis();
+    if (currentMillis - startMillis >= 1000) {
+      startMillis = currentMillis;
+
+      long secondsLeft = timer->getTime();
+      long target = timer->getTarget();
+      long secondsPerLed = target / NUM_LEDS;
+      int ledToLightUpTo = secondsLeft / secondsPerLed;
+
+      for (int i = 0; i < NUM_LEDS; i++) {
+        if (i <= ledToLightUpTo) {
+          
+
+          if (ledToLightUpTo > 30) {
+            leds[i] = CRGB::Green;    
+          } else if (ledToLightUpTo > 20) {
+            leds[i] = CHSV( 64, 255, 255); // Yellow
+          } else if (ledToLightUpTo > 10) {
+            leds[i] = CHSV( 22, 255, 255); // Orange
+          } else {
+            leds[i] = CRGB::Red;
+          }
+
+        } else {
+          leds[i] = CRGB::Black;    
+        }
+      } 
+      FastLED.show();
+    }
   }
 
   void showSuccess() {

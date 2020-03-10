@@ -16,7 +16,7 @@ DisplayTimer displayTimer = DisplayTimer(12, 13, 10, TEST_MODE);
 LetterLogic letterLogic = LetterLogic(4, 5, 2, 3, &challengeDisplay, TEST_MODE);
 LatchControl latchControl = LatchControl(A0, A1, A2, A3);
 // The LED Strip uses pin 11
-LEDStrip ledStrip = LEDStrip();
+LEDStrip ledStrip = LEDStrip(&displayTimer);
 
 void setup() {
   Serial.begin(9600);
