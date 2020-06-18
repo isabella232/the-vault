@@ -1,12 +1,13 @@
 #ifndef LEDStrip_h
 #define LEDStrip_h
 
+#include "Arduino.h"
 #include <FastLED.h>
 #include "DisplayTimer.h"
 
 
 // Remember to update the numbers responsible for setting the color for countdown
-#define NUM_LEDS 60
+#define NUM_LEDS 69
 #define DATA_PIN 11
 
 CRGB leds[NUM_LEDS];
@@ -36,23 +37,23 @@ public:
 
   void loop() {
     currentMillis = millis();
+    
     if (currentMillis - startMillis >= 1000) {
       startMillis = currentMillis;
 
-      long secondsLeft = timer->getTime();
+      long secondsLeft =  timer->getTime();
       long target = timer->getTarget();
-      long secondsPerLed = target / NUM_LEDS;
+      float secondsPerLed = (float) target / (float) NUM_LEDS;
       int ledToLightUpTo = secondsLeft / secondsPerLed;
-
       for (int i = 0; i < NUM_LEDS; i++) {
         if (i <= ledToLightUpTo) {
-          
+            
 
-          if (ledToLightUpTo > 30) {
+          if (ledToLightUpTo > 32) {
             leds[i] = CRGB::Green;    
-          } else if (ledToLightUpTo > 20) {
+          } else if (ledToLightUpTo > 22) {
             leds[i] = CHSV( 64, 255, 255); // Yellow
-          } else if (ledToLightUpTo > 10) {
+          } else if (ledToLightUpTo > 12) {
             leds[i] = CHSV( 22, 255, 255); // Orange
           } else {
             leds[i] = CRGB::Red;
